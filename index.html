@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smart Home Management System - manage devices, rooms, energy and automations.">
+  <title>Haven | Smart Home Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Haven home">
+        <span class="brand-mark">⌂</span><span>haven<span class="brand-dot">.</span></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-menu" aria-label="Main navigation">
+        <button class="nav-link active" data-page="overview"><span>▦</span> Overview</button>
+        <button class="nav-link" data-page="devices"><span>◉</span> Devices <span class="nav-count" id="deviceNavCount">8</span></button>
+        <button class="nav-link" data-page="rooms"><span>⌂</span> Rooms</button>
+        <button class="nav-link" data-page="automation"><span>⟳</span> Automation</button>
+        <button class="nav-link" data-page="energy"><span>ϟ</span> Energy usage</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-icon">✦</div>
+          <strong>Make life simpler</strong>
+          <p>Manage your home from one convenient place.</p>
+        </div>
+        <button class="nav-link" data-page="settings"><span>⚙</span> Settings</button>
+        <div class="profile">
+          <div class="avatar">S</div>
+          <div><strong>Home Owner</strong><small>Administrator</small></div>
+          <span class="profile-more">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">My Home <span>/</span> <strong id="pageCrumb">Overview</strong></div>
+        <div class="top-actions">
+          <span class="connection"><i></i> All systems online</span>
+          <button class="icon-button" id="themeToggle" aria-label="Toggle theme">◐</button>
+          <div class="top-avatar">S</div>
+        </div>
+      </header>
+
+      <section class="page active-page" id="overviewPage">
+        <div class="welcome-row">
+          <div><p class="eyebrow" id="todayLabel">YOUR HOME AT A GLANCE</p><h1>Good evening, Swathi <span>✦</span></h1><p class="subheading">Here's what's happening around your home today.</p></div>
+          <button class="primary-button" data-go="devices">＋ Manage devices</button>
+        </div>
+        <div class="stat-grid">
+          <article class="stat-card"><div class="stat-top"><span>Connected devices</span><span class="stat-icon purple">◉</span></div><div class="stat-number" id="connectedStat">6 <small>/ 8</small></div><div class="stat-foot"><span class="positive">● Live status</span><span>Across 4 rooms</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Energy today</span><span class="stat-icon yellow">ϟ</span></div><div class="stat-number" id="energyStat">8.4 <small>kWh</small></div><div class="stat-foot"><span class="positive">↓ 12%</span><span>vs. yesterday</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Home temperature</span><span class="stat-icon blue">♧</span></div><div class="stat-number">24° <small>C</small></div><div class="stat-foot"><span class="muted">Comfortable</span><span>Living room</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Security status</span><span class="stat-icon green">♢</span></div><div class="stat-number status-number">Secure</div><div class="stat-foot"><span class="positive">● All protected</span><span>Last checked now</span></div></article>
+        </div>
+
+        <div class="section-heading"><div><h2>Quick controls</h2><p>Frequently used devices at your fingertips.</p></div><button class="text-button" data-go="devices">View all devices ↗</button></div>
+        <div class="device-grid" id="quickDevices"></div>
+
+        <div class="lower-grid">
+          <article class="panel energy-panel">
+            <div class="panel-heading"><div><h2>Energy consumption</h2><p>Your usage over the last 7 days</p></div><span class="period-pill">This week ▾</span></div>
+            <div class="chart-summary"><strong>42.8 <small>kWh</small></strong><span class="positive">↓ 8.5% <small>vs last week</small></span></div>
+            <div class="chart" id="energyChart" aria-label="Energy consumption bar chart"></div>
+            <div class="chart-legend"><span><i></i> Energy used (kWh)</span><span>Daily average: 6.1 kWh</span></div>
+          </article>
+          <article class="panel room-panel">
+            <div class="panel-heading"><div><h2>Rooms</h2><p>Device activity by room</p></div><button class="text-button" data-go="rooms">See all ↗</button></div>
+            <div id="roomSummary" class="room-summary"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="devicesPage">
+        <div class="page-title-row"><div><p class="eyebrow">YOUR CONNECTED HOME</p><h1>Devices</h1><p class="subheading">Control and monitor all your smart devices.</p></div><button class="primary-button" id="addDeviceBtn">＋ Add device</button></div>
+        <div class="toolbar"><div class="search-box">⌕ <input id="deviceSearch" type="search" placeholder="Search devices..." aria-label="Search devices"></div><select id="roomFilter" aria-label="Filter by room"><option value="all">All rooms</option><option>Living Room</option><option>Bedroom</option><option>Kitchen</option><option>Study Room</option></select><select id="statusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="on">On</option><option value="off">Off</option></select></div>
+        <div class="device-grid all-devices" id="allDevices"></div>
+      </section>
+
+      <section class="page" id="roomsPage">
+        <div class="page-title-row"><div><p class="eyebrow">YOUR HOME SPACES</p><h1>Rooms</h1><p class="subheading">A room-by-room view of your connected home.</p></div></div>
+        <div class="rooms-grid" id="roomsGrid"></div>
+      </section>
+
+      <section class="page" id="automationPage">
+        <div class="page-title-row"><div><p class="eyebrow">MAKE YOUR HOME WORK FOR YOU</p><h1>Automation</h1><p class="subheading">Set simple routines for your everyday activities.</p></div><button class="primary-button" id="addAutomationBtn">＋ Create routine</button></div>
+        <div class="automation-note"><span>✦</span><div><strong>What is automation?</strong><p>Automations are demo rules in this project. Enable or disable a routine to manage its simulated status.</p></div></div>
+        <div class="automation-list" id="automationList"></div>
+      </section>
+
+      <section class="page" id="energyPage">
+        <div class="page-title-row"><div><p class="eyebrow">USE ENERGY MINDFULLY</p><h1>Energy usage</h1><p class="subheading">Understand your home's simulated electricity consumption.</p></div><span class="period-pill">Last 7 days</span></div>
+        <div class="energy-kpis"><article class="stat-card"><span>Total usage</span><strong>42.8 <small>kWh</small></strong><small class="positive">↓ 8.5% from last week</small></article><article class="stat-card"><span>Estimated cost</span><strong>₹ 342.40</strong><small>At an example rate of ₹8/kWh</small></article><article class="stat-card"><span>Daily average</span><strong>6.1 <small>kWh</small></strong><small>Based on sample data</small></article></div>
+        <article class="panel full-chart-panel"><div class="panel-heading"><div><h2>Daily consumption</h2><p>Sample energy data for demonstration</p></div></div><div class="chart large-chart" id="energyChartLarge"></div></article>
+        <p class="disclaimer">Note: Energy readings and cost are sample values. Real measurements require compatible smart meters or IoT devices.</p>
+      </section>
+
+      <section class="page" id="settingsPage">
+        <div class="page-title-row"><div><p class="eyebrow">PREFERENCES</p><h1>Settings</h1><p class="subheading">Manage your demo application preferences.</p></div></div>
+        <article class="panel settings-panel"><h2>Home profile</h2><label class="field-label" for="homeName">Home name</label><input class="form-input" id="homeName" value="My Home"><label class="field-label" for="ownerName">Owner name</label><input class="form-input" id="ownerName" value="Swathi"><button class="primary-button" id="saveSettings">Save changes</button></article>
+        <article class="panel settings-panel"><h2>Application data</h2><p class="subheading">Device states and routines are saved in this browser using localStorage.</p><button class="danger-button" id="resetData">Reset demo data</button></article>
+        <div class="about-line">Haven Smart Home Management System · Academic demonstration project · Version 1.0</div>
+      </section>
+      <footer class="footer">© 2026 Haven Smart Home Management System <span>Designed for a smarter, simpler home.</span></footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog class="modal" id="deviceModal">
+    <form method="dialog" id="deviceForm">
+      <div class="modal-heading"><div><p class="eyebrow">DEVICE SETUP</p><h2>Add a device</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div>
+      <label class="field-label" for="newDeviceName">Device name</label><input class="form-input" id="newDeviceName" required maxlength="30" placeholder="e.g. Reading lamp">
+      <label class="field-label" for="newDeviceType">Device type</label><select class="form-input" id="newDeviceType"><option value="light">Light</option><option value="plug">Smart plug</option><option value="climate">Air conditioner</option><option value="security">Security</option></select>
+      <label class="field-label" for="newDeviceRoom">Room</label><select class="form-input" id="newDeviceRoom"><option>Living Room</option><option>Bedroom</option><option>Kitchen</option><option>Study Room</option></select>
+      <button class="primary-button modal-submit" type="submit">Add device</button>
+    </form>
+  </dialog>
+  <dialog class="modal" id="automationModal">
+    <form method="dialog" id="automationForm">
+      <div class="modal-heading"><div><p class="eyebrow">NEW ROUTINE</p><h2>Create automation</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div>
+      <label class="field-label" for="routineName">Routine name</label><input class="form-input" id="routineName" required maxlength="40" placeholder="e.g. Study time">
+      <label class="field-label" for="routineTime">Trigger time</label><input class="form-input" id="routineTime" type="time" value="18:00" required>
+      <label class="field-label" for="routineAction">Action</label><select class="form-input" id="routineAction"><option>Turn on selected lights</option><option>Turn off all devices</option><option>Set comfort temperature</option></select>
+      <button class="primary-button modal-submit" type="submit">Create routine</button>
+    </form>
+  </dialog>
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
